@@ -11,7 +11,7 @@ import com.springapp.RestAPIs.entities.LoadsApi;
 public class LoadsServiceImpl implements LoadsService {
 
     List<LoadsApi> list;
-
+ 
     
     public LoadsServiceImpl(){
         // list = new ArrayList<>();

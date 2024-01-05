@@ -6,7 +6,7 @@ import com.springapp.RestAPIs.entities.LoadsApi;
 
 
 
-
+ 
 
 public interface LoadsService {
 
