@@ -1,24 +1,22 @@
+
 package com.springapp.RestAPIs.entities;
 
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 import java.util.Date;
 
+
+import java.util.UUID;
+
+
 @Entity
 @Table(name = "loads")
-public class LoadsApi {
+public class Load {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // private Long id;
 
     @Column(name = "loading_point")
     private String loadingPoint;
@@ -39,22 +37,20 @@ public class LoadsApi {
 
     private String comment;
 
-    @Column(name = "shipper_id")
-    private String shipperId;
+    @Column(name = "shipper_id", unique = true)
+    private UUID shipperId;
 
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    // Constructors, getters, and setters
-    // You may consider using Lombok or manually define constructors, getters, and setters
-
-    public LoadsApi() {
+    // Constructors
+    public Load() {
         // Default constructor
     }
 
-    // Constructor without id, assuming id is generated
-    public LoadsApi(String loadingPoint, String unloadingPoint, String productType, String truckType, int noOfTrucks,
-                double weight, String comment, String shipperId, Date date) {
+    public Load(String loadingPoint, String unloadingPoint, String productType,
+                String truckType, int noOfTrucks, double weight, String comment,
+                UUID shipperId, Date date) {
         this.loadingPoint = loadingPoint;
         this.unloadingPoint = unloadingPoint;
         this.productType = productType;
@@ -66,16 +62,14 @@ public class LoadsApi {
         this.date = date;
     }
 
+    // Getters and Setters
+    // public Long getId() {
+    //     return id;
+    // }
 
- 
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // public void setId(Long id) {
+    //     this.id = id;
+    // }
 
     public String getLoadingPoint() {
         return loadingPoint;
@@ -133,11 +127,11 @@ public class LoadsApi {
         this.comment = comment;
     }
 
-    public String getShipperId() {
+    public UUID getShipperId() {
         return shipperId;
     }
 
-    public void setShipperId(String shipperId) {
+    public void setShipperId(UUID shipperId) {
         this.shipperId = shipperId;
     }
 
@@ -149,4 +143,3 @@ public class LoadsApi {
         this.date = date;
     }
 }
-
