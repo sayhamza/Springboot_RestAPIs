@@ -1,4 +1,5 @@
 package com.springapp.RestAPIs.services;
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.springapp.RestAPIs.entities.LoadEntities;
@@ -62,15 +63,36 @@ public LoadEntities updateLoad(Long loadId, LoadEntities updatedLoad) {
     }
 
     // 5
+    // @Override
+    // public void deleteLoadById(Long id) {
+    //     loadRepository.deleteById(id);
+    // }
+
+
     @Override
-    public void deleteLoadById(Long id) {
-        loadRepository.deleteById(id);
+    public boolean deleteLoadById(Long id) {
+        try {
+            java.util.Optional<LoadEntities> load = loadRepository.findById(id);
+            
+            if (load.isPresent()) {
+                loadRepository.deleteById(id);
+                return true;
+            } else {
+                return false; // Indicates load with the given ID was not found
+            }
+        } catch (Exception e) {
+            // Log the exception or handle it accordingly
+            return false; // Indicates failure during deletion
+        }
     }
+
 
     @Override
     public void deleteAll() {
     loadRepository.deleteAll();
     }
+
+   
 
 
 }

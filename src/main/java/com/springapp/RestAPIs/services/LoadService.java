@@ -16,8 +16,8 @@ public interface LoadService {
 
     LoadEntities updateLoad(Long loadId, LoadEntities updatedLoad);
     
-    void deleteLoadById(Long id);
+    boolean deleteLoadById(Long id);
 
     void deleteAll();
-    
+
 }

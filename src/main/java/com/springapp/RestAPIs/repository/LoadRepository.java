@@ -9,4 +9,6 @@ import java.util.List;
 public interface LoadRepository extends JpaRepository<LoadEntities, Long> {
     // Retrieve loads by shipperId
     List<LoadEntities> findByShipperId(String shipperId);
+
+;
 }
