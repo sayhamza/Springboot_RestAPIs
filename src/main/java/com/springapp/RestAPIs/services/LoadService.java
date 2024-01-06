@@ -1,19 +1,20 @@
 package com.springapp.RestAPIs.services;
 
 import java.util.List;
-import com.springapp.RestAPIs.entities.Load;
+import com.springapp.RestAPIs.entities.LoadEntities;
 
 public interface LoadService {
+    
 
-    Load saveLoad(Load load);
+    LoadEntities saveLoad(LoadEntities load);
 
-    List<Load> getAllLoads();
+    List<LoadEntities> getAllLoads();
 
-    List<Load> getLoadsByShipperId(String shipperId);
+    List<LoadEntities> getLoadsByShipperId(String shipperId);
 
-    Load getLoadById(Long load);
+    LoadEntities getLoadById(Long load);
 
-    Load updateLoad(Long loadId, Load updatedLoad);
+    LoadEntities updateLoad(Long loadId, LoadEntities updatedLoad);
     
     void deleteLoadById(Long id);
 

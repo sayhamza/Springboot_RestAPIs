@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "loads")
-public class Load {
+public class LoadEntities {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +50,7 @@ public class Load {
     private Date date;
     
 
-    public Load() {
+    public LoadEntities() {
         // Default constructor
         super();
         this.date = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kolkata")).getTime();

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springapp.RestAPIs.entities.Load;
+import com.springapp.RestAPIs.entities.LoadEntities;
 import com.springapp.RestAPIs.services.LoadService;
 
 
@@ -31,8 +31,8 @@ public class LoadController {
     // 1
 
     @PostMapping("/load")
-    public ResponseEntity<String> addLoad(@RequestBody Load load) {
-    Load savedLoad = loadService.saveLoad(load);
+    public ResponseEntity<String> addLoad(@RequestBody LoadEntities load) {
+    LoadEntities savedLoad = loadService.saveLoad(load);
 
     if (savedLoad != null) {
         return ResponseEntity.status(HttpStatus.CREATED).body("Payload added successfully");
@@ -45,8 +45,8 @@ public class LoadController {
     // 2
 
     @GetMapping("/load")
-    public ResponseEntity<List<Load>> getAllLoads() {
-    List<Load> loads = loadService.getAllLoads();
+    public ResponseEntity<List<LoadEntities>> getAllLoads() {
+    List<LoadEntities> loads = loadService.getAllLoads();
     return ResponseEntity.ok(loads);
     }
 
@@ -54,7 +54,7 @@ public class LoadController {
 
     @GetMapping("/load/shipperId")
     public ResponseEntity<?> getLoadsByShipperId(@RequestParam String shipperId) {
-        List<Load> loads = loadService.getLoadsByShipperId(shipperId);
+        List<LoadEntities> loads = loadService.getLoadsByShipperId(shipperId);
         if (loads.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No loads found with shipperId: " + shipperId);
         } else {
@@ -68,7 +68,7 @@ public class LoadController {
 
     @GetMapping("/load/{loadId}")
     public ResponseEntity<?> getLoadById(@PathVariable Long loadId) {
-        Load load = loadService.getLoadById(loadId);
+        LoadEntities load = loadService.getLoadById(loadId);
         if (load != null) {
             try {
                 // Convert Load object to JSON string
@@ -88,8 +88,8 @@ public class LoadController {
     // 4 
 
     @PutMapping("/load/{loadId}")
-    public ResponseEntity<?> updateLoadById(@PathVariable Long loadId, @RequestBody Load updatedLoad) {
-        Load updatedPayload = loadService.updateLoad(loadId, updatedLoad);
+    public ResponseEntity<?> updateLoadById(@PathVariable Long loadId, @RequestBody LoadEntities updatedLoad) {
+        LoadEntities updatedPayload = loadService.updateLoad(loadId, updatedLoad);
         if (updatedPayload != null) {
             return ResponseEntity.status(HttpStatus.OK).body("Payload with loadId " + loadId + " has been updated");
         } else {

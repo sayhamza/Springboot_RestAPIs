@@ -1,48 +1,48 @@
 package com.springapp.RestAPIs.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.springapp.RestAPIs.entities.Load;
+import com.springapp.RestAPIs.entities.LoadEntities;
 import com.springapp.RestAPIs.repository.LoadRepository;
 import java.util.List;
 
 @Service
-public class LoadServiceImpl implements LoadService {
+public class LoadServiceImplementation implements LoadService {
 
     @Autowired
     private final LoadRepository loadRepository;
 
     
-    public LoadServiceImpl(LoadRepository loadRepository) {
+    public LoadServiceImplementation(LoadRepository loadRepository) {
         this.loadRepository = loadRepository;
     }
     
     // 1
     @Override
-    public Load saveLoad(Load load) {
+    public LoadEntities saveLoad(LoadEntities load) {
         return loadRepository.save(load);
     }
 
     // 2
     @Override
-    public List<Load> getAllLoads() {
+    public List<LoadEntities> getAllLoads() {
         return loadRepository.findAll();
     }
 
     @Override
-    public List<Load> getLoadsByShipperId(String shipperId) {
+    public List<LoadEntities> getLoadsByShipperId(String shipperId) {
         return loadRepository.findByShipperId(shipperId);
     }
 
     // 3
     @Override
-    public Load getLoadById(Long id) {
+    public LoadEntities getLoadById(Long id) {
         return loadRepository.findById(id).orElse(null);
     }
 
     // 4
     @Override
-public Load updateLoad(Long loadId, Load updatedLoad) {
-    Load existingLoad = loadRepository.findById(loadId).orElse(null);
+public LoadEntities updateLoad(Long loadId, LoadEntities updatedLoad) {
+    LoadEntities existingLoad = loadRepository.findById(loadId).orElse(null);
     if (existingLoad != null) {
         // Update other properties
         existingLoad.setLoadingPoint(updatedLoad.getLoadingPoint());
