@@ -1,16 +1,23 @@
 package com.springapp.RestAPIs.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springapp.RestAPIs.entities.Load;
 import com.springapp.RestAPIs.services.LoadService;
 
-import java.util.List;
+
 
 @RestController
-@RequestMapping("/api/load")
+// @RequestMapping("/load")
+
 public class LoadController {
     
     @Autowired
@@ -23,7 +30,7 @@ public class LoadController {
 
     // 1
 
-    @PostMapping
+    @PostMapping("/load")
     public ResponseEntity<String> addLoad(@RequestBody Load load) {
     Load savedLoad = loadService.saveLoad(load);
 
@@ -37,71 +44,64 @@ public class LoadController {
 
     // 2
 
-
-    @GetMapping
-    public ResponseEntity<List<Load>> getLoadsByShipperId(@RequestParam(required = false) String shipperId) {
-    List<Load> loads;
-
-    if (shipperId != null) {
-        loads = loadService.getLoadsByShipperId(shipperId);
-    } else {
-        loads = loadService.getAllLoads();
-    }
-
-    if (loads.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Or return an appropriate message
-    } else {
-        return ResponseEntity.status(HttpStatus.OK).body(loads);
-    }
+    @GetMapping("/load")
+    public ResponseEntity<List<Load>> getAllLoads() {
+    List<Load> loads = loadService.getAllLoads();
+    return ResponseEntity.ok(loads);
     }
 
 
-    
+
+    @GetMapping("/load/shipperId")
+    public ResponseEntity<?> getLoadsByShipperId(@RequestParam String shipperId) {
+        List<Load> loads = loadService.getLoadsByShipperId(shipperId);
+        if (loads.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No loads found with shipperId: " + shipperId);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(loads);
+        }
+    }
+
+
+  
     // 3
 
     @GetMapping("/load/{loadId}")
-    public ResponseEntity<Load> getLoadById(@PathVariable Long loadId) {
-    Load load = loadService.getLoadById(loadId);
+    public ResponseEntity<?> getLoadById(@PathVariable Long loadId) {
+        Load load = loadService.getLoadById(loadId);
+        if (load != null) {
+            try {
+                // Convert Load object to JSON string
+                ObjectMapper objectMapper = new ObjectMapper();
+                String loadJson = objectMapper.writeValueAsString(load);
 
-    if (load != null) {
-        return ResponseEntity.status(HttpStatus.OK).body(load);
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Or return an appropriate message
+                return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(loadJson);
+            } catch (JsonProcessingException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process JSON");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No payload found with loadId: " + loadId);
+        }
     }
-    }
-
+    
+    
     // 4 
 
     @PutMapping("/load/{loadId}")
-    public ResponseEntity<Load> updateLoadById(@PathVariable Long loadId, @RequestBody Load updatedLoad) {
-    Load existingLoad = loadService.getLoadById(loadId);
-
-    if (existingLoad != null) {
-        existingLoad.setLoadingPoint(updatedLoad.getLoadingPoint());
-        existingLoad.setUnloadingPoint(updatedLoad.getUnloadingPoint());
-        existingLoad.setProductType(updatedLoad.getProductType());
-        existingLoad.setTruckType(updatedLoad.getTruckType());
-        existingLoad.setNoOfTrucks(updatedLoad.getNoOfTrucks());
-        existingLoad.setWeight(updatedLoad.getWeight());
-        existingLoad.setComment(updatedLoad.getComment());
-        existingLoad.setDate(updatedLoad.getDate()); // Assuming 'Date' is a property in the Load class
-
-        Load updatedLoadEntity = loadService.saveLoad(existingLoad);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedLoadEntity);
-    } else {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Or return an appropriate message
+    public ResponseEntity<?> updateLoadById(@PathVariable Long loadId, @RequestBody Load updatedLoad) {
+        Load updatedPayload = loadService.updateLoad(loadId, updatedLoad);
+        if (updatedPayload != null) {
+            return ResponseEntity.status(HttpStatus.OK).body("Payload with loadId " + loadId + " has been updated");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No payload found with loadId: " + loadId);
+        }
     }
-}
+    
     // 5
-
-    @DeleteMapping("/load/{loadId}")
-    public void deleteLoadById(@PathVariable Long loadId) {
-        loadService.deleteLoadById(loadId);
-    }
 
     // optional delete all
 
-    @DeleteMapping
+    @DeleteMapping("/load")
     public void deleteAll() {
         loadService.deleteAll();
     }

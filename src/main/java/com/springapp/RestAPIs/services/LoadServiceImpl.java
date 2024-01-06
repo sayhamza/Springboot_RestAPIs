@@ -1,12 +1,9 @@
 package com.springapp.RestAPIs.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.springapp.RestAPIs.entities.Load;
 import com.springapp.RestAPIs.repository.LoadRepository;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LoadServiceImpl implements LoadService {
@@ -18,7 +15,14 @@ public class LoadServiceImpl implements LoadService {
     public LoadServiceImpl(LoadRepository loadRepository) {
         this.loadRepository = loadRepository;
     }
+    
+    // 1
+    @Override
+    public Load saveLoad(Load load) {
+        return loadRepository.save(load);
+    }
 
+    // 2
     @Override
     public List<Load> getAllLoads() {
         return loadRepository.findAll();
@@ -29,28 +33,44 @@ public class LoadServiceImpl implements LoadService {
         return loadRepository.findByShipperId(shipperId);
     }
 
+    // 3
     @Override
-    public Load getLoadById(Long loadId) {
-        Optional<Load> load = loadRepository.findById(loadId);
-        return load.orElse(null);
+    public Load getLoadById(Long id) {
+        return loadRepository.findById(id).orElse(null);
     }
 
+    // 4
     @Override
-    public Load saveLoad(Load load) {
-        return loadRepository.save(load);
+public Load updateLoad(Long loadId, Load updatedLoad) {
+    Load existingLoad = loadRepository.findById(loadId).orElse(null);
+    if (existingLoad != null) {
+        // Update other properties
+        existingLoad.setLoadingPoint(updatedLoad.getLoadingPoint());
+        existingLoad.setUnloadingPoint(updatedLoad.getUnloadingPoint());
+        existingLoad.setProductType(updatedLoad.getProductType());
+        existingLoad.setTruckType(updatedLoad.getTruckType());
+        existingLoad.setNoOfTrucks(updatedLoad.getNoOfTrucks());
+        existingLoad.setWeight(updatedLoad.getWeight());
+        existingLoad.setComment(updatedLoad.getComment());
+
+        existingLoad.setDate(updatedLoad.getDate());
+        return loadRepository.save(existingLoad);
+
+        } else {
+            return null;
+        }
     }
 
+    // 5
     @Override
-    public void deleteLoadById(Long loadId) {
-        loadRepository.deleteById(loadId);
+    public void deleteLoadById(Long id) {
+        loadRepository.deleteById(id);
     }
-
-    
 
     @Override
     public void deleteAll() {
-        
-        loadRepository.deleteAll();
+    loadRepository.deleteAll();
     }
+
 
 }

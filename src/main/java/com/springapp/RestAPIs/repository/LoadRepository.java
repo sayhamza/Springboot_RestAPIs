@@ -9,9 +9,4 @@ import java.util.List;
 public interface LoadRepository extends JpaRepository<Load, Long> {
     // Retrieve loads by shipperId
     List<Load> findByShipperId(String shipperId);
-
-
-
-
-    
 }

@@ -6,12 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.hibernate.annotations.UuidGenerator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+
 
 @Entity
 @Table(name = "loads")
@@ -38,18 +40,20 @@ public class Load {
     private String truckType;
 
     @Column(name = "no_of_trucks")
-    private int noOfTrucks;
+    private String noOfTrucks;
 
-    private double weight;
+    private String weight;
 
     private String comment;
 
-    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date date;
+    
 
     public Load() {
         // Default constructor
         super();
+        this.date = Calendar.getInstance(TimeZone.getTimeZone("Asia/Kolkata")).getTime();
     }
 
     // Getters and setters for each field
@@ -94,19 +98,19 @@ public class Load {
         this.truckType = truckType;
     }
 
-    public int getNoOfTrucks() {
+    public String getNoOfTrucks() {
         return noOfTrucks;
     }
 
-    public void setNoOfTrucks(int noOfTrucks) {
+    public void setNoOfTrucks(String noOfTrucks) {
         this.noOfTrucks = noOfTrucks;
     }
 
-    public double getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
