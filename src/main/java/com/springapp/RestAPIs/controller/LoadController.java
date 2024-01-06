@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.springapp.RestAPIs.entities.LoadEntities;
 import com.springapp.RestAPIs.services.LoadService;
 
@@ -35,7 +37,7 @@ public class LoadController {
     LoadEntities savedLoad = loadService.saveLoad(load);
 
     if (savedLoad != null) {
-        return ResponseEntity.status(HttpStatus.CREATED).body("Payload added successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Payload details added successfully");
     } else {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add payload");
     }
@@ -52,13 +54,33 @@ public class LoadController {
 
 
 
+    // @GetMapping("/load/shipperId")
+    // public ResponseEntity<?> getLoadsByShipperId(@RequestParam String shipperId) {
+    //     List<LoadEntities> loads = loadService.getLoadsByShipperId(shipperId);
+    //     if (loads.isEmpty()) {
+    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No loads found with shipperId: " + shipperId);
+    //     } else {
+    //         return ResponseEntity.status(HttpStatus.OK).body(loads);
+    //     }
+    // }
+
+
     @GetMapping("/load/shipperId")
     public ResponseEntity<?> getLoadsByShipperId(@RequestParam String shipperId) {
         List<LoadEntities> loads = loadService.getLoadsByShipperId(shipperId);
         if (loads.isEmpty()) {
+
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No loads found with shipperId: " + shipperId);
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body(loads);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            ArrayNode loadsJsonArray = objectMapper.valueToTree(loads);
+
+            ObjectNode response = objectMapper.createObjectNode();
+            response.put("message", "List of loads are");
+            response.putArray("payload").addAll(loadsJsonArray);
+
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
     }
 
