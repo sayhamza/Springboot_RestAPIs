@@ -52,4 +52,5 @@ public class LoadServiceImpl implements LoadService {
         
         loadRepository.deleteAll();
     }
+
 }

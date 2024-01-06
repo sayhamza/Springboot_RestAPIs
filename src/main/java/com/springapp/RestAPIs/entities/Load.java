@@ -11,6 +11,8 @@ import jakarta.persistence.TemporalType;
 
 import java.util.Date;
 
+import org.hibernate.annotations.UuidGenerator;
+
 @Entity
 @Table(name = "loads")
 public class Load {
@@ -18,6 +20,10 @@ public class Load {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @UuidGenerator
+    @Column(name = "shipper_id")
+    private String shipperId;
 
     @Column(name = "loading_point")
     private String loadingPoint;
@@ -38,22 +44,16 @@ public class Load {
 
     private String comment;
 
-    @Column(name = "shipper_id")
-    private String shipperId;
-
     @Temporal(TemporalType.DATE)
     private Date date;
-
-    // Constructors...
 
     public Load() {
         // Default constructor
         super();
     }
 
-    // Constructor...
-
     // Getters and setters for each field
+    
     public Long getId() {
         return id;
     }
