@@ -1,5 +1,4 @@
 package com.springapp.RestAPIs.services;
-import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.springapp.RestAPIs.entities.LoadEntities;
@@ -63,12 +62,6 @@ public LoadEntities updateLoad(Long loadId, LoadEntities updatedLoad) {
     }
 
     // 5
-    // @Override
-    // public void deleteLoadById(Long id) {
-    //     loadRepository.deleteById(id);
-    // }
-
-
     @Override
     public boolean deleteLoadById(Long id) {
         try {

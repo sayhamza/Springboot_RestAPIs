@@ -120,15 +120,6 @@ public class LoadController {
     }
 } 
 
-
-    
-    // 5
-    // @DeleteMapping("/load/{loadId}")
-    // public ResponseEntity<String> deleteLoadById(@PathVariable Long loadId) {
-    //     loadService.deleteLoadById(loadId);
-    //     return ResponseEntity.ok("Load with ID " + loadId + " has been deleted");
-    // }
-    
     @DeleteMapping("/load/{loadId}")
     public ResponseEntity<String> deleteLoadById(@PathVariable Long loadId) {
         try {
